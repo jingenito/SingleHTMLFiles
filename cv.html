@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background-color: #f1f1f1;
-            color: #1e1e1e;
+            background-color: #1e1e1e;
+            color: #f1f1f1;
         }
 
         .main-content {
@@ -38,9 +38,30 @@
                 display: inline;
             }
     </style>
+
+    <script>
+        var dark_color = "#1e1e1e";
+        var light_color = "#f1f1f1";
+
+        function toggle_DarkMode(){
+            var color = document.body.style.backgroundColor;
+            var is_dark = true;
+            if(color){
+                var tc = color.split("(")[1].split(")")[0];
+                tc = tc.split(",");
+                var c = "#" + tc.map(function(x){             //For each array element
+                    x = parseInt(x).toString(16);      //Convert to a base16 string
+                    return (x.length == 1) ? "0" + x : x;  //Add zero if we get only one character
+                }).join("");
+                is_dark = c == dark_color;
+            }
+            document.body.style.backgroundColor = is_dark ? light_color : dark_color;
+            document.body.style.color = is_dark ? dark_color : light_color;
+        }
+    </script>
 </head>
 
-<body>
+<body onload="toggle_DarkMode();">
     <div class="main-content">
         <div class="content">
             <h1>CURRICULUM VITAE</h1>
@@ -54,6 +75,7 @@
                     <li>|</li>
                     <li><a href="https://www.linkedin.com/in/joseph-ingenito-b64023158/" target="_blank">LinkedIn</a></li>
                 </ul>
+                <a href="#" onclick="toggle_DarkMode();" style="display: none;">Toggle Dark Mode</a>
             </div>
             
             <div class="item-showcase">
