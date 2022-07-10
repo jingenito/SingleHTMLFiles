@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logic</title>
+
+    <link rel="stylesheet" href="slider.css">
+    <link rel="stylesheet" href="glow_on_hover.css">
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            font-size: large;
+        }
+
+        .invisible{
+            display: none !important;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+        }
+
+            .main-content .content {
+                display: inline-block;
+                width: 60%;
+                text-align: center;
+            }
+
+                .main-content .content .content-spacer{ height: 3em;}
+
+                .main-content .content .content-panel{
+                    margin: 0.5em;
+                    padding: 0.25em;
+                }
+
+                .main-content .content .grid-panel{
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-rows: repeat(2, 1fr);
+                    grid-column-gap: 5px;
+                    grid-row-gap: 5px;
+                }
+
+                    .main-content .content .grid-panel .div1 { grid-area: 1 / 1 / 2 / 3; }
+                    .main-content .content .grid-panel .div2 { grid-area: 2 / 1 / 3 / 2; }
+                    .main-content .content .grid-panel .div3 { grid-area: 2 / 2 / 3 / 3; }
+
+                .main-content .content .content-card,
+                .main-content .content .content-card-nohover{
+                    border-radius: 1em;
+                    text-align: center;
+                    padding: 2em;
+                    margin: 0.25em;
+                    background-color: #323030;
+                }
+
+                    .main-content .content .content-card:hover{
+                        border: 0.1em white solid;
+                        background-color: #4f4c4c;
+                        opacity: 0.6;
+                    }
+
+                    .main-content .content .content-card-success{
+                        border: 0.3em rgb(98, 182, 7) solid !important;
+                        color: rgb(98, 182, 7) !important;
+                        font-weight: bold !important;
+                    }
+
+                    .main-content .content .content-card-wrong{
+                        border: 0.3em rgb(239, 10, 10) solid !important;
+                        color: rgb(239, 10, 10) !important;
+                        font-weight: bold !important;
+                    }
+
+                    .question-panel {  
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        grid-template-rows: 1fr 1fr 1fr;
+                        gap: 5px 5px;
+                        grid-auto-flow: row;
+                        grid-template-areas:
+                            "question question"
+                            "a1 a2"
+                            "a3 a4";
+                    }
+
+                        .question-panel .question { grid-area: question; }
+                        .question-panel .a1 { grid-area: a1; }
+                        .question-panel .a2 { grid-area: a2; }
+                        .question-panel .a3 { grid-area: a3; }
+                        .question-panel .a4 { grid-area: a4; }
+    </style>
+
+    <script>
+        var invisible_class = 'invisible';
+        var question_correct_class = 'content-card-success';
+        var question_wrong_class = 'content-card-wrong';
+
+        function switch_AND_toggled(){
+            var a = document.getElementById('input_a').checked;
+            var b = document.getElementById('input_b').checked;
+            var val = a && b;
+            document.getElementById('output_and').checked = val;
+            if(val){
+                //showing the question panel once the value is true at least once
+                document.getElementById('div_and_question').classList.remove(invisible_class);
+            }
+        }
+
+        function switch_OR_toggled(){
+            var a = document.getElementById('input_c').checked;
+            var b = document.getElementById('input_d').checked;
+            var val = a || b;
+            document.getElementById('output_or').checked = val;
+            if(val){
+                document.getElementById('div_or_question').classList.remove(invisible_class);
+            }
+        }
+
+        function switch_NOT_toggled(){
+            var a = document.getElementById('input_e').checked;
+            document.getElementById('output_not').checked = !a;
+            if(a){
+                document.getElementById('div_not_question').classList.remove(invisible_class);
+                document.getElementById('div_not_q_spacer').classList.remove(invisible_class);
+            }
+        }
+
+        function butt_next_clicked(){
+            alert('More lessons to come in the future!');
+        }
+
+        function alert_hint(arg){
+            switch(arg){
+                case 0:
+                    alert('A unary operator is an operator which takes in one value as an argument and returns another value.');
+                    break;
+                case 1:
+                    alert('A binary operator is an operator which takes in two values as arguments and returns a single value.');
+                    break;
+            }
+        }
+
+        function check_answer(div, question, answer){
+            var next_div_ids = ['div_or', 'div_not', 'div_next'];
+            var answers = [1, 3, 0];
+            if(answers[question] == answer){
+                div.classList.add(question_correct_class);
+                document.getElementById(next_div_ids[question]).classList.remove(invisible_class);
+                document.getElementById(next_div_ids[question] + '_spacer').classList.remove(invisible_class);
+            }else{
+                div.classList.add(question_wrong_class);
+            }
+        }
+    </script>
+</head>
+<body onload="switch_NOT_toggled()">
+
+    <div class="main-content">
+        <div class="content">
+
+            <div id="div_and" class="content-panel grid-panel" style="height: 25em">
+                <div class="div1 content-card-nohover">
+                    <p>Toggle the switches below and observe the effect on the <a style="color:rgb(16, 16, 232)" onclick="alert_hint(1)">binary operator</a> <strong>&#8743</strong>.</p><br/>
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" disabled="true" id="output_and">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label A <strong>&#8743</strong> B</label>
+                </div>
+
+                <div class="div2 content-card" style="height: 5em">
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" id="input_a" onclick="switch_AND_toggled()">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label A</label>
+                </div>
+
+                <div class="div3 content-card" style="height: 5em">
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" id="input_b" onclick="switch_AND_toggled()">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label B</label>
+                </div>
+            </div>
+
+            <div id="div_and_question" class="content-panel question-panel invisible" style="height: 25em">
+                <div class="question content-card-nohover">
+                    <p>Which English word would best describe the function of the <strong>&#8743</strong> operator?</p>
+                </div>
+                <div class="a1 content-card" onclick="check_answer(this, 0, 0)">
+                    <p>OR</p>
+                </div>
+                <div class="a2 content-card" onclick="check_answer(this, 0, 1)">
+                    <p>AND</p>
+                </div>
+                <div class="a3 content-card" onclick="check_answer(this, 0, 2)">
+                    <p>NOT</p>
+                </div>
+                <div class="a4 content-card" onclick="check_answer(this, 0, 3)">
+                    <p>IMPLIES</p>
+                </div>
+            </div>
+
+            <div id="div_or_spacer"d class="content-spacer invisible"></div>
+
+            <div id="div_or" class="content-panel grid-panel invisible" style="height: 25em">
+                <div class="div1 content-card-nohover">
+                    <p>Toggle the switches below and observe the effect on the <a style="color:rgb(16, 16, 232)" onclick="alert_hint(1)">binary operator</a> <strong>&#8744</strong>.</p><br/>
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" disabled="true" id="output_or">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label C <strong>&#8744</strong> D</label>
+                </div>
+
+                <div class="div2 content-card" style="height: 5em">
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" id="input_c" onclick="switch_OR_toggled()">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label C</label>
+                </div>
+
+                <div class="div3 content-card" style="height: 5em">
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" id="input_d" onclick="switch_OR_toggled()">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label D</label>
+                </div>
+            </div>
+
+            <div id="div_or_question" class="content-panel question-panel invisible" style="height: 25em">
+                <div class="question content-card-nohover">
+                    <p>Which English word would best describe the function of the <strong>&#8744</strong> operator?</p>
+                </div>
+                <div class="a1 content-card" onclick="check_answer(this, 1, 0)">
+                    <p>AND</p>
+                </div>
+                <div class="a2 content-card" onclick="check_answer(this, 1, 1)">
+                    <p>NOT</p>
+                </div>
+                <div class="a3 content-card" onclick="check_answer(this, 1, 2)">
+                    <p>IMPLIES</p>
+                </div>
+                <div class="a4 content-card" onclick="check_answer(this, 1, 3)">
+                    <p>OR</p>
+                </div>
+            </div>
+
+            <div id="div_not_spacer" class="content-spacer invisible"></div>
+
+            <div id="div_not" class="content-panel invisible" style="height: 20em">
+                <div class="content-card-nohover">
+                    <p>Toggle the switch and observe the effect on the <a style="color:rgb(16, 16, 232)" onclick="alert_hint(0)">unary operator</a> <strong>&#172</strong>.</p><br/>
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" id="output_not" disabled="true">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label &#172 E</label>
+                </div>
+
+                <div class="content-card">
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" id="input_e" onclick="switch_NOT_toggled()">
+                        <span class="slider round"></span>
+                    </label><br/>
+                    <label>Label E</label>
+                </div>
+            </div>
+
+            <div id="div_not_q_spacer" class="content-spacer invisible"></div>
+
+            <div id="div_not_question" class="content-panel question-panel invisible" style="height: 25em">
+                <div class="question content-card-nohover">
+                    <p>Which English word would best describe the function of the <strong>&#172</strong> operator?</p>
+                </div>
+                <div class="a1 content-card" onclick="check_answer(this, 2, 0)">
+                    <p>NOT</p>
+                </div>
+                <div class="a2 content-card" onclick="check_answer(this, 2, 1)">
+                    <p>OR</p>
+                </div>
+                <div class="a3 content-card" onclick="check_answer(this, 2, 2)">
+                    <p>IMPLIES</p>
+                </div>
+                <div class="a4 content-card" onclick="check_answer(this, 2, 3)">
+                    <p>AND</p>
+                </div>
+            </div>
+
+            <div id="div_next_spacer" class="content-spacer invisible"></div>
+
+            <div id="div_next" class="content-panel invisible">
+                <button class="glow-on-hover" type="button" onclick="butt_next_clicked()">Next Lesson!</button>
+            </div>
+        </div>
+    </div>
+
+</body>
