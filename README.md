@@ -1,5 +1,5 @@
-<h3>Date Created: 09/22/2020</h3>
-<p>This repo is for all of my standalone html files.</p>
+<h3>Standalone HTML Pages</h3>
+
 <a href="https://jingenito.github.io/SingleHTMLFiles/cv.html" target="_blank">Cirriculum Vitae</a><br/>
 <a href="https://jingenito.github.io/SingleHTMLFiles/SeniorSoftwareEngineeringResume.pdf" target="_blank">Software Engineering Resume</a><br/>
 <a href="https://jingenito.github.io/SingleHTMLFiles/DataScienceResume.pdf" target="_blank">Data Science Resume</a><br/>
