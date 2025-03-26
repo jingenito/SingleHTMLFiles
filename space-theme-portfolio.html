@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #0b0c10;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: block;
+    }
+
+    nav {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      gap: 2em;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 0.5em 1em;
+      border-radius: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #66fcf1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 600px;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 12px;
+      padding: 2em;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      font-size: 3em;
+    }
+
+    p {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starCanvas"></canvas>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#resume">Resume</a>
+    <a href="#cv">CV</a>
+  </nav>
+  <div class="content">
+    <h1>Joseph M. Ingenito</h1>
+    <p>AI Researcher | Software Engineer | Systems Architect</p>
+	<p style="margin-top: 2em;">
+		<strong>I build AI systems that work in the real world.</strong><br/>
+		From smart agents to scalable schedulers — I design, automate, and ship.
+	</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+      alert("Canvas context not available!");
+    }
+
+    let stars = [];
+    const numStars = 200;
+    const avoidRadius = 150;
+    let mouse = { x: -9999, y: -9999 };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      createStars();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 3 + 2,
+          speedX: (Math.random() - 0.5) * 0.3,
+          speedY: (Math.random() - 0.5) * 0.3,
+          twinkle: Math.random() * 0.1 + 0.05
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let star of stars) {
+        const dx = star.x - mouse.x;
+        const dy = star.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < avoidRadius) {
+          const angle = Math.atan2(dy, dx);
+          const push = (avoidRadius - dist) / avoidRadius;
+          star.x += Math.cos(angle) * push * 2;
+          star.y += Math.sin(angle) * push * 2;
+        }
+
+        star.radius += (Math.random() - 0.5) * star.twinkle;
+        star.radius = Math.max(1, Math.min(4, star.radius));
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = 'white';
+        ctx.fillStyle = 'white';
+        ctx.fill();
+
+        star.x += star.speedX;
+        star.y += star.speedY;
+
+        if (star.x < 0 || star.x > canvas.width) star.speedX *= -1;
+        if (star.y < 0 || star.y > canvas.height) star.speedY *= -1;
+      }
+    }
+
+    function animate() {
+      drawStars();
+      requestAnimationFrame(animate);
+    }
+
+    resizeCanvas();
+    animate();
+  </script>
+</body>
+</html>
