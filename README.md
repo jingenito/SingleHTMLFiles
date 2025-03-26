@@ -2,9 +2,9 @@
 # SingleHTMLFiles
 
 ## Contact Info
-Joseph M. Ingenito
-Ingenifold Research
-contact@josephingenito.com
+Joseph M. Ingenito  
+Ingenifold Research  
+contact@josephingenito.com  
 
 ## Links
 [Cirriculum Vitae](https://jingenito.github.io/SingleHTMLFiles/cv.html)  
